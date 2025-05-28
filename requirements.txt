@@ -7,3 +7,5 @@ shap
 plotly
 joblib
 seaborn
+xgboost
+lightgbm
