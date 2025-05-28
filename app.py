@@ -10,6 +10,7 @@ from PIL import Image
 import base64
 import plotly.graph_objects as go
 import plotly.express as px
+import os
 
 limits = {
     "max_age": {"min": 19, "max": 101, "mean": 64.78},
@@ -307,11 +308,18 @@ def create_header():
 @st.cache_resource
 def load_model():
     try:
-        model = pickle.load(open('Stacking_best_model1.pkl', 'rb'))
-        scaler = pickle.load(open('StandardScaler_model2.pkl', 'rb'))
+        base_path = os.path.dirname(__file__)
+        model_path = os.path.join(base_path, 'Stacking_best_model1.pkl')
+        scaler_path = os.path.join(base_path, 'StandardScaler_model2.pkl')
+
+        with open(model_path, 'rb') as f1, open(scaler_path, 'rb') as f2:
+            model = pickle.load(f1)
+            scaler = pickle.load(f2)
+
         return model, scaler
+
     except FileNotFoundError:
-        st.error("Model files not found. Please ensure the model files are in the correct location.")
+        st.error("Model files not found. Please ensure 'Stacking_best_model1.pkl' and 'StandardScaler_model2.pkl' are in the root directory.")
         return None, None
 
 # Create a background image or gradient
